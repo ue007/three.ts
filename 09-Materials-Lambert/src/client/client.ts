@@ -5,8 +5,14 @@ import Stats from 'three/examples/jsm/libs/stats.module';
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module';
 
 const scene: THREE.Scene = new THREE.Scene();
+//scene.background = new THREE.Color(0xff0000)
+
 const axesHelper = new THREE.AxesHelper(5);
 scene.add(axesHelper);
+
+const light = new THREE.PointLight(0xffffff, 2);
+light.position.set(10, 10, 10);
+scene.add(light);
 
 const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(
   75,
@@ -31,11 +37,10 @@ const icosahedronGeometry: THREE.IcosahedronGeometry = new THREE.IcosahedronGeom
 const planeGeometry: THREE.PlaneGeometry = new THREE.PlaneGeometry();
 const torusKnotGeometry: THREE.TorusKnotGeometry = new THREE.TorusKnotGeometry();
 
-const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial(); //{ color: 0x00ff00, wireframe: true })
+const material: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial();
 
 const texture = new THREE.TextureLoader().load('images/grid_25.jpg');
 material.map = texture;
-
 const envTexture = new THREE.CubeTextureLoader().load([
   'images/px_25.jpg',
   'images/nx_25.jpg',
@@ -44,7 +49,7 @@ const envTexture = new THREE.CubeTextureLoader().load([
   'images/pz_25.jpg',
   'images/nz_25.jpg',
 ]);
-//envTexture.mapping = THREE.CubeReflectionMapping
+envTexture.mapping = THREE.CubeReflectionMapping;
 envTexture.mapping = THREE.CubeRefractionMapping;
 // material.envMap = envTexture;
 
@@ -111,20 +116,28 @@ materialFolder.open();
 
 var data = {
   color: material.color.getHex(),
+  emissive: material.emissive.getHex(),
 };
 
-var meshBasicMaterialFolder = gui.addFolder('THREE.MeshBasicMaterial');
-meshBasicMaterialFolder.addColor(data, 'color').onChange(() => {
+var meshLambertMaterialFolder = gui.addFolder('THREE.MeshLambertMaterial');
+
+meshLambertMaterialFolder.addColor(data, 'color').onChange(() => {
   material.color.setHex(Number(data.color.toString().replace('#', '0x')));
 });
-meshBasicMaterialFolder.add(material, 'wireframe');
-//meshBasicMaterialFolder.add(material, 'wireframeLinewidth', 0, 10);
-meshBasicMaterialFolder
+meshLambertMaterialFolder.addColor(data, 'emissive').onChange(() => {
+  material.emissive.setHex(Number(data.emissive.toString().replace('#', '0x')));
+});
+meshLambertMaterialFolder.add(material, 'wireframe');
+meshLambertMaterialFolder.add(material, 'wireframeLinewidth', 0, 10);
+meshLambertMaterialFolder
+  .add(material, 'flatShading')
+  .onChange(() => updateMaterial());
+meshLambertMaterialFolder
   .add(material, 'combine', options.combine)
   .onChange(() => updateMaterial());
-meshBasicMaterialFolder.add(material, 'reflectivity', 0, 1);
-meshBasicMaterialFolder.add(material, 'refractionRatio', 0, 1);
-meshBasicMaterialFolder.open();
+meshLambertMaterialFolder.add(material, 'reflectivity', 0, 1);
+meshLambertMaterialFolder.add(material, 'refractionRatio', 0, 1);
+meshLambertMaterialFolder.open();
 
 function updateMaterial() {
   material.side = Number(material.side);
@@ -134,7 +147,9 @@ function updateMaterial() {
 
 var animate = function () {
   requestAnimationFrame(animate);
+
   render();
+
   stats.update();
 };
 
