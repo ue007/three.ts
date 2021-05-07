@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Three.js TypeScript Tutorials by Sean Bradley</title>
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0px;
+            background-color: black;
+            font-size: 14px;
+            color: white;
+            font-family: monospace;
+        }
+
+        #canvas {
+            border: 1px solid green;
+        }
+
+        table,
+        td,
+        th {
+            border: 1px solid #888888;
+            text-align: left;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 602px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="600" height="400"></canvas>
+    <table id="stats">
+        <!-- <tr>
+            <td>Generated Server Side</td>
+            <td><span id="serverISODateTime"></span></td>
+        </tr> -->
+        <tr>
+            <td>Client Local ISO Date</td>
+            <td><span id="clientISODateTime"></span></td>
+        </tr>
+        <tr>
+            <td>Ping ms</td>
+            <td><span id="pingPongMs"></span></td>
+        </tr>
+        <tr>
+            <td>Socket ID</td>
+            <td><span id="socketID"></span></td>
+        </tr>
+        <!-- <tr>
+            <td>Latency MS</td>
+            <td><span id="latency"></span></td>
+        </tr> -->
+        <!-- <tr>
+            <td>Server Render Delta MS</td>
+            <td><span id="serverRenderDelta"></span></td>
+        </tr> -->
+    </table>
+
+
+    <script src="socket.io/socket.io.js"></script>
+    <script type="module" src="client.js"></script>
+</body>
+
+</html>
