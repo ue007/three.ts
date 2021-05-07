@@ -31,9 +31,9 @@ const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-//renderer.shadowMap.type = THREE.BasicShadowMap
-//renderer.shadowMap.type = THREE.PCFShadowMap
-//renderer.shadowMap.type = THREE.VSMShadowMap
+//renderer.shadowMap.type = THREE.BasicShadowMap  Standard Shadow map最基本的shadow map，即从光源处渲染场景深度到shadow map中，计算shadow时将pixel深度值z与light projection space下的深度值d作比较
+//renderer.shadowMap.type = THREE.PCFShadowMap PCF的基本原理是在像素周围区域内多次采样并进行深度值比较，然后对结果进行加权平均
+//renderer.shadowMap.type = THREE.VSMShadowMap Variance Shadow MapVSM由Donnelly和Lauritzen于2006年提出[4]，它用一种基于统计的方法来计算shadow。核心原理是，将shadow map看成深度的分布F，Donnelly和Lauritzen证明了当shadow receiver为平面时，shadow的值等于F的切比雪夫不等式的上界
 
 document.body.appendChild(renderer.domElement);
 
